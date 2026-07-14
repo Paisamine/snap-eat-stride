@@ -72,14 +72,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "CalorieSnap AI — Snap food, know calories" },
-      { name: "description", content: "AI food scanner: estimate calories, macros, and the walking steps needed to burn them. Snap a photo, get insights." },
-      { name: "theme-color", content: "#22c58a" },
-      { property: "og:title", content: "CalorieSnap AI" },
-      { property: "og:description", content: "Snap food, know calories, and see the steps to burn them." },
+      { title: "Calorie Count — Know Your Calories. Track Your Progress. Live Healthier." },
+      { name: "description", content: "Calorie Count: premium AI wellness companion for calorie tracking, nutrition planning, weight goals, and healthy habits." },
+      { name: "theme-color", content: "#6F4E37" },
+      { property: "og:title", content: "Calorie Count" },
+      { property: "og:description", content: "Know Your Calories. Track Your Progress. Live Healthier." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

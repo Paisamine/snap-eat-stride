@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter, useNavigate } from "@tanstack/react-router";
-import { Home, History, User, Camera, Salad, LogOut, Moon, Sun, Utensils } from "lucide-react";
+import { Home, History, User, Camera, Coffee, LogOut, Moon, Sun, Utensils } from "lucide-react";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -60,9 +60,10 @@ function AppShell() {
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
           <Link to="/home" className="flex items-center gap-2">
             <div className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
-              <Salad className="h-4 w-4" />
+              <Coffee className="h-4 w-4" />
             </div>
-            <span className="font-bold tracking-tight">CalorieSnap<span className="text-primary">AI</span></span>
+            <span className="font-bold tracking-tight">Calorie<span className="text-primary"> Count</span></span>
+
           </Link>
           <div className="flex items-center gap-1">
             <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full hover:bg-accent">

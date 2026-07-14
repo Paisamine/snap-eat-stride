@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Salad, Loader2 } from "lucide-react";
+import { Coffee, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,10 +62,11 @@ function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center gap-3">
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow">
-            <Salad className="h-7 w-7" />
+            <Coffee className="h-7 w-7" />
           </div>
-          <h1 className="text-2xl font-bold">CalorieSnap AI</h1>
-          <p className="text-sm text-muted-foreground">Snap food, know calories.</p>
+          <h1 className="text-2xl font-bold">Calorie Count</h1>
+          <p className="text-sm text-muted-foreground">Know Your Calories. Track Your Progress. Live Healthier.</p>
+
         </div>
         <div className="rounded-3xl border border-border bg-card p-6 shadow-soft">
           <Tabs defaultValue="signin">
