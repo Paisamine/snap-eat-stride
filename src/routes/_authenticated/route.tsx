@@ -1,8 +1,9 @@
-import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter, useNavigate } from "@tanstack/react-router";
 import { Home, History, User, Camera, Salad, LogOut, Moon, Sun } from "lucide-react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useTheme } from "@/components/theme-provider";
-import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -17,8 +18,26 @@ export const Route = createFileRoute("/_authenticated")({
 function AppShell() {
   const location = useLocation();
   const router = useRouter();
+  const navigate = useNavigate();
   const qc = useQueryClient();
   const { theme, toggle } = useTheme();
+
+  const { data: onboarded } = useQuery({
+    queryKey: ["onboarding-status"],
+    queryFn: async () => {
+      const { data: u } = await supabase.auth.getUser();
+      const { data } = await supabase.from("profiles").select("onboarding_completed").eq("id", u.user!.id).maybeSingle();
+      return data?.onboarding_completed ?? false;
+    },
+    staleTime: 30_000,
+  });
+
+  useEffect(() => {
+    if (onboarded === undefined) return;
+    const onOnboarding = location.pathname.startsWith("/onboarding");
+    if (!onboarded && !onOnboarding) navigate({ to: "/onboarding", replace: true });
+    if (onboarded && onOnboarding) navigate({ to: "/home", replace: true });
+  }, [onboarded, location.pathname, navigate]);
 
   async function signOut() {
     await qc.cancelQueries();
