@@ -45,6 +45,8 @@ function ProfileContent() {
   const [form, setForm] = useState({
     full_name: "", age: "", height_cm: "", weight_kg: "", gender: "",
     daily_step_goal: "10000", daily_calorie_goal: "2000",
+    country: "", region: "", language: "", allergies: "", medical_conditions: "",
+    budget: "", cooking_skill: "", cooking_time_min: "", foods_liked: "", foods_disliked: "",
   });
   const [saving, setSaving] = useState(false);
 
