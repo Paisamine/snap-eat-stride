@@ -1,5 +1,5 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { Camera, Sparkles, Footprints, Salad, ArrowRight, Moon, Sun } from "lucide-react";
+import { Camera, Sparkles, Footprints, Coffee, ArrowRight, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useTheme } from "@/components/theme-provider";
@@ -20,9 +20,10 @@ function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <div className="flex items-center gap-2">
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
-            <Salad className="h-5 w-5" />
+            <Coffee className="h-5 w-5" />
           </div>
-          <span className="text-lg font-bold tracking-tight">CalorieSnap<span className="text-primary">AI</span></span>
+          <span className="text-lg font-bold tracking-tight">Calorie<span className="text-primary"> Count</span></span>
+
         </div>
         <div className="flex items-center gap-2">
           <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full border border-border hover:bg-accent">
@@ -37,15 +38,16 @@ function Landing() {
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div className="animate-in-up">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <Sparkles className="h-3.5 w-3.5" /> AI-powered nutrition
+              <Sparkles className="h-3.5 w-3.5" /> Premium AI wellness
             </div>
             <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
-              Snap your food.<br />
-              <span className="bg-gradient-primary bg-clip-text text-transparent">Know the steps.</span>
+              Know your calories.<br />
+              <span className="bg-gradient-primary bg-clip-text text-transparent">Live healthier.</span>
             </h1>
             <p className="mt-5 max-w-lg text-base text-muted-foreground md:text-lg">
-              Point your camera at a meal. CalorieSnap AI estimates calories, macros, and the exact walking steps to burn them off.
+              Calorie Count is your premium AI companion for tracking meals, planning nutrition, and reaching your weight goals — one mindful step at a time.
             </p>
+
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/auth">
                 <Button size="lg" className="rounded-full shadow-glow">

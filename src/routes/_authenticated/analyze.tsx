@@ -92,9 +92,10 @@ function AnalyzePage() {
 
   async function share() {
     if (!result) return;
-    const text = `I just scanned ${result.food_name} — ${Math.round(result.calories)} kcal, ${result.steps_needed.toLocaleString()} steps to burn. #CalorieSnapAI`;
+    const text = `I just scanned ${result.food_name} — ${Math.round(result.calories)} kcal, ${result.steps_needed.toLocaleString()} steps to burn. #CalorieCount`;
     if (navigator.share) {
-      try { await navigator.share({ text, title: "CalorieSnap AI" }); } catch {}
+      try { await navigator.share({ text, title: "Calorie Count" }); } catch {}
+
     } else {
       await navigator.clipboard.writeText(text);
       toast.success("Copied to clipboard");
