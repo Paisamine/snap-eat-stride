@@ -60,6 +60,16 @@ function ProfileContent() {
       gender: p.gender ?? "",
       daily_step_goal: (p.daily_step_goal ?? 10000).toString(),
       daily_calorie_goal: (p.daily_calorie_goal ?? 2000).toString(),
+      country: (p as any).country ?? "",
+      region: (p as any).region ?? "",
+      language: (p as any).language ?? "",
+      allergies: (p as any).allergies ?? "",
+      medical_conditions: (p as any).medical_conditions ?? "",
+      budget: (p as any).budget ?? "",
+      cooking_skill: (p as any).cooking_skill ?? "",
+      cooking_time_min: (p as any).cooking_time_min?.toString() ?? "",
+      foods_liked: (p as any).foods_liked ?? "",
+      foods_disliked: (p as any).foods_disliked ?? "",
     });
   }, [data.profile]);
 
@@ -73,7 +83,17 @@ function ProfileContent() {
       gender: form.gender || null,
       daily_step_goal: Number(form.daily_step_goal) || 10000,
       daily_calorie_goal: Number(form.daily_calorie_goal) || 2000,
-    }).eq("id", data.user.id);
+      country: form.country || null,
+      region: form.region || null,
+      language: form.language || null,
+      allergies: form.allergies || null,
+      medical_conditions: form.medical_conditions || null,
+      budget: form.budget || null,
+      cooking_skill: form.cooking_skill || null,
+      cooking_time_min: form.cooking_time_min ? Number(form.cooking_time_min) : null,
+      foods_liked: form.foods_liked || null,
+      foods_disliked: form.foods_disliked || null,
+    } as any).eq("id", data.user.id);
     setSaving(false);
     if (error) return toast.error(error.message);
     toast.success("Profile updated");
