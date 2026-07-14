@@ -100,6 +100,49 @@ function ProfileContent() {
         </div>
       </Card>
 
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Link to="/checkin">
+          <Card className="flex items-center gap-3 rounded-2xl p-4 transition hover:shadow-soft">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-primary">
+              <ClipboardCheck className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Weekly check-in</p>
+              <p className="text-xs text-muted-foreground">Log weight & measurements</p>
+            </div>
+          </Card>
+        </Link>
+        <button
+          type="button"
+          onClick={async () => {
+            await supabase.from("profiles").update({ onboarding_completed: false }).eq("id", data.user.id);
+            await qc.invalidateQueries();
+            toast.info("Restarting onboarding…");
+          }}
+          className="text-left"
+        >
+          <Card className="flex items-center gap-3 rounded-2xl p-4 transition hover:shadow-soft">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/15 text-primary">
+              <RefreshCw className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Redo health profile</p>
+              <p className="text-xs text-muted-foreground">Update lifestyle & goals</p>
+            </div>
+          </Card>
+        </button>
+      </div>
+
+      <Card className="rounded-3xl bg-gradient-primary p-5 text-primary-foreground shadow-soft">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wider opacity-80">Estimated metabolism</p>
+            <p className="text-xl font-bold capitalize">{data.profile?.metabolism_profile ?? "—"}</p>
+          </div>
+          <Sparkles className="h-5 w-5 opacity-80" />
+        </div>
+      </Card>
+
       <div className="grid grid-cols-3 gap-3">
         <MiniStat icon={TrendingUp} label="Scans" value={n.toString()} />
         <MiniStat icon={Flame} label="Avg kcal" value={avgCal.toLocaleString()} />
