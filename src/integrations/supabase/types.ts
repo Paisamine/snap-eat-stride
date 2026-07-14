@@ -79,42 +79,144 @@ export type Database = {
       }
       profiles: {
         Row: {
+          activity_level: string | null
           age: number | null
+          alcohol: string | null
           avatar_url: string | null
           created_at: string
           daily_calorie_goal: number
           daily_step_goal: number
+          diet_preference: string | null
+          exercise_frequency: string | null
           full_name: string | null
           gender: string | null
+          health_goal: string | null
           height_cm: number | null
+          hip_cm: number | null
           id: string
+          last_checkin_at: string | null
+          metabolism_answers: Json | null
+          metabolism_profile: string | null
+          neck_cm: number | null
+          occupation: string | null
+          onboarding_completed: boolean
+          sleep_hours: number | null
+          smoking: string | null
+          target_weight_kg: number | null
           updated_at: string
+          waist_cm: number | null
+          water_intake_l: number | null
           weight_kg: number | null
         }
         Insert: {
+          activity_level?: string | null
           age?: number | null
+          alcohol?: string | null
           avatar_url?: string | null
           created_at?: string
           daily_calorie_goal?: number
           daily_step_goal?: number
+          diet_preference?: string | null
+          exercise_frequency?: string | null
           full_name?: string | null
           gender?: string | null
+          health_goal?: string | null
           height_cm?: number | null
+          hip_cm?: number | null
           id: string
+          last_checkin_at?: string | null
+          metabolism_answers?: Json | null
+          metabolism_profile?: string | null
+          neck_cm?: number | null
+          occupation?: string | null
+          onboarding_completed?: boolean
+          sleep_hours?: number | null
+          smoking?: string | null
+          target_weight_kg?: number | null
           updated_at?: string
+          waist_cm?: number | null
+          water_intake_l?: number | null
           weight_kg?: number | null
         }
         Update: {
+          activity_level?: string | null
           age?: number | null
+          alcohol?: string | null
           avatar_url?: string | null
           created_at?: string
           daily_calorie_goal?: number
           daily_step_goal?: number
+          diet_preference?: string | null
+          exercise_frequency?: string | null
           full_name?: string | null
           gender?: string | null
+          health_goal?: string | null
           height_cm?: number | null
+          hip_cm?: number | null
           id?: string
+          last_checkin_at?: string | null
+          metabolism_answers?: Json | null
+          metabolism_profile?: string | null
+          neck_cm?: number | null
+          occupation?: string | null
+          onboarding_completed?: boolean
+          sleep_hours?: number | null
+          smoking?: string | null
+          target_weight_kg?: number | null
           updated_at?: string
+          waist_cm?: number | null
+          water_intake_l?: number | null
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
+      weight_checkins: {
+        Row: {
+          created_at: string
+          energy_level: number | null
+          exercise_frequency: string | null
+          hip_cm: number | null
+          id: string
+          mood: string | null
+          neck_cm: number | null
+          notes: string | null
+          photo_url: string | null
+          sleep_hours: number | null
+          user_id: string
+          waist_cm: number | null
+          water_intake_l: number | null
+          weight_kg: number | null
+        }
+        Insert: {
+          created_at?: string
+          energy_level?: number | null
+          exercise_frequency?: string | null
+          hip_cm?: number | null
+          id?: string
+          mood?: string | null
+          neck_cm?: number | null
+          notes?: string | null
+          photo_url?: string | null
+          sleep_hours?: number | null
+          user_id: string
+          waist_cm?: number | null
+          water_intake_l?: number | null
+          weight_kg?: number | null
+        }
+        Update: {
+          created_at?: string
+          energy_level?: number | null
+          exercise_frequency?: string | null
+          hip_cm?: number | null
+          id?: string
+          mood?: string | null
+          neck_cm?: number | null
+          notes?: string | null
+          photo_url?: string | null
+          sleep_hours?: number | null
+          user_id?: string
+          waist_cm?: number | null
+          water_intake_l?: number | null
           weight_kg?: number | null
         }
         Relationships: []
