@@ -1,24 +1,110 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { Camera, Sparkles, Footprints, Salad, ArrowRight, Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useTheme } from "@/components/theme-provider";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  ssr: false,
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) throw redirect({ to: "/home" });
+  },
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Landing() {
+  const { theme, toggle } = useTheme();
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-gradient-hero">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <div className="flex items-center gap-2">
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
+            <Salad className="h-5 w-5" />
+          </div>
+          <span className="text-lg font-bold tracking-tight">CalorieSnap<span className="text-primary">AI</span></span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full border border-border hover:bg-accent">
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          <Link to="/auth"><Button variant="ghost">Sign in</Button></Link>
+          <Link to="/auth"><Button className="rounded-full">Get started</Button></Link>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-6 pb-20 pt-10 md:pt-20">
+        <div className="grid gap-10 md:grid-cols-2 md:items-center">
+          <div className="animate-in-up">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+              <Sparkles className="h-3.5 w-3.5" /> AI-powered nutrition
+            </div>
+            <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
+              Snap your food.<br />
+              <span className="bg-gradient-primary bg-clip-text text-transparent">Know the steps.</span>
+            </h1>
+            <p className="mt-5 max-w-lg text-base text-muted-foreground md:text-lg">
+              Point your camera at a meal. CalorieSnap AI estimates calories, macros, and the exact walking steps to burn them off.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/auth">
+                <Button size="lg" className="rounded-full shadow-glow">
+                  Start scanning <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/auth">
+                <Button size="lg" variant="outline" className="rounded-full">Sign in</Button>
+              </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-6 text-sm text-muted-foreground">
+              <Feature icon={Camera} label="Camera or upload" />
+              <Feature icon={Footprints} label="Steps to burn" />
+              <Feature icon={Sparkles} label="Healthy tips" />
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute -inset-8 rounded-3xl bg-gradient-primary opacity-20 blur-3xl" />
+            <div className="relative rounded-3xl border border-border bg-card p-6 shadow-soft">
+              <div className="rounded-2xl bg-gradient-hero p-6">
+                <div className="text-xs font-medium text-muted-foreground">Grilled salmon bowl</div>
+                <div className="mt-1 text-3xl font-bold">520 <span className="text-base font-medium text-muted-foreground">kcal</span></div>
+                <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                  <Stat label="Protein" value="42g" />
+                  <Stat label="Carbs" value="38g" />
+                  <Stat label="Fat" value="22g" />
+                </div>
+                <div className="mt-4 rounded-xl bg-primary/10 p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-xs text-primary">Walk to burn</div>
+                      <div className="text-2xl font-bold text-primary">10,400 steps</div>
+                    </div>
+                    <Footprints className="h-8 w-8 text-primary" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function Feature({ icon: Icon, label }: { icon: any; label: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Icon className="h-4 w-4 text-primary" />
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl bg-card p-3">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className="text-lg font-semibold">{value}</div>
     </div>
   );
 }
