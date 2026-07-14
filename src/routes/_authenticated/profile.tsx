@@ -192,6 +192,41 @@ function ProfileContent() {
           <Field label="Daily step goal"><Input type="number" value={form.daily_step_goal} onChange={e => setForm({ ...form, daily_step_goal: e.target.value })} /></Field>
           <Field label="Daily calorie goal"><Input type="number" value={form.daily_calorie_goal} onChange={e => setForm({ ...form, daily_calorie_goal: e.target.value })} /></Field>
         </div>
+      </Card>
+
+      <Card className="rounded-3xl p-5 space-y-4">
+        <h2 className="font-semibold">Diet & cuisine preferences</h2>
+        <p className="text-xs text-muted-foreground -mt-2">Helps the AI tailor meals to your country & lifestyle.</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Country"><Input value={form.country} onChange={e => setForm({ ...form, country: e.target.value })} placeholder="e.g. India" /></Field>
+          <Field label="State / Region"><Input value={form.region} onChange={e => setForm({ ...form, region: e.target.value })} placeholder="Optional" /></Field>
+          <Field label="Preferred language"><Input value={form.language} onChange={e => setForm({ ...form, language: e.target.value })} placeholder="e.g. English" /></Field>
+          <Field label="Budget">
+            <Select value={form.budget} onValueChange={v => setForm({ ...form, budget: v })}>
+              <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="premium">Premium</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field label="Cooking skill">
+            <Select value={form.cooking_skill} onValueChange={v => setForm({ ...form, cooking_skill: v })}>
+              <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="beginner">Beginner</SelectItem>
+                <SelectItem value="intermediate">Intermediate</SelectItem>
+                <SelectItem value="advanced">Advanced</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field label="Cooking time (min/meal)"><Input type="number" value={form.cooking_time_min} onChange={e => setForm({ ...form, cooking_time_min: e.target.value })} placeholder="e.g. 30" /></Field>
+          <Field label="Allergies"><Input value={form.allergies} onChange={e => setForm({ ...form, allergies: e.target.value })} placeholder="e.g. peanuts, shellfish" /></Field>
+          <Field label="Medical conditions"><Input value={form.medical_conditions} onChange={e => setForm({ ...form, medical_conditions: e.target.value })} placeholder="Optional" /></Field>
+          <Field label="Foods you like"><Input value={form.foods_liked} onChange={e => setForm({ ...form, foods_liked: e.target.value })} placeholder="e.g. paneer, oats" /></Field>
+          <Field label="Foods you dislike"><Input value={form.foods_disliked} onChange={e => setForm({ ...form, foods_disliked: e.target.value })} placeholder="e.g. mushrooms" /></Field>
+        </div>
         <Button onClick={save} disabled={saving} className="w-full rounded-full">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save changes"}
         </Button>
