@@ -27,12 +27,12 @@ function AppShell() {
     router.navigate({ to: "/auth", replace: true });
   }
 
-  const nav = [
+  const nav: Array<{ to: string; label: string; icon: any; primary?: boolean }> = [
     { to: "/home", label: "Home", icon: Home },
     { to: "/analyze", label: "Scan", icon: Camera, primary: true },
     { to: "/history", label: "History", icon: History },
     { to: "/profile", label: "Profile", icon: User },
-  ] as const;
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,13 +66,13 @@ function AppShell() {
             const Icon = item.icon;
             if (item.primary) {
               return (
-                <Link key={item.to} to={item.to} className="-mt-6 grid h-14 w-14 place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow transition-transform hover:scale-105">
+                <Link key={item.to} to={item.to as any} className="-mt-6 grid h-14 w-14 place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-glow transition-transform hover:scale-105">
                   <Icon className="h-6 w-6" />
                 </Link>
               );
             }
             return (
-              <Link key={item.to} to={item.to} className={`flex flex-col items-center gap-0.5 rounded-xl px-4 py-1.5 text-xs transition ${active ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>
+              <Link key={item.to} to={item.to as any} className={`flex flex-col items-center gap-0.5 rounded-xl px-4 py-1.5 text-xs transition ${active ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>
                 <Icon className="h-5 w-5" />
                 <span>{item.label}</span>
               </Link>
