@@ -77,34 +77,144 @@ export type Database = {
         }
         Relationships: []
       }
+      favorite_meals: {
+        Row: {
+          calories: number | null
+          carbs_g: number | null
+          created_at: string
+          description: string | null
+          fat_g: number | null
+          id: string
+          ingredients: Json | null
+          meal_type: string | null
+          name: string
+          protein_g: number | null
+          user_id: string
+        }
+        Insert: {
+          calories?: number | null
+          carbs_g?: number | null
+          created_at?: string
+          description?: string | null
+          fat_g?: number | null
+          id?: string
+          ingredients?: Json | null
+          meal_type?: string | null
+          name: string
+          protein_g?: number | null
+          user_id: string
+        }
+        Update: {
+          calories?: number | null
+          carbs_g?: number | null
+          created_at?: string
+          description?: string | null
+          fat_g?: number | null
+          id?: string
+          ingredients?: Json | null
+          meal_type?: string | null
+          name?: string
+          protein_g?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      meal_plans: {
+        Row: {
+          carbs_g: number | null
+          country: string | null
+          created_at: string
+          daily_calories: number | null
+          days: Json
+          fat_g: number | null
+          goal: string | null
+          grocery: Json | null
+          id: string
+          is_active: boolean
+          protein_g: number | null
+          tips: Json | null
+          title: string | null
+          updated_at: string
+          user_id: string
+          water_l: number | null
+        }
+        Insert: {
+          carbs_g?: number | null
+          country?: string | null
+          created_at?: string
+          daily_calories?: number | null
+          days: Json
+          fat_g?: number | null
+          goal?: string | null
+          grocery?: Json | null
+          id?: string
+          is_active?: boolean
+          protein_g?: number | null
+          tips?: Json | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+          water_l?: number | null
+        }
+        Update: {
+          carbs_g?: number | null
+          country?: string | null
+          created_at?: string
+          daily_calories?: number | null
+          days?: Json
+          fat_g?: number | null
+          goal?: string | null
+          grocery?: Json | null
+          id?: string
+          is_active?: boolean
+          protein_g?: number | null
+          tips?: Json | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+          water_l?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           activity_level: string | null
           age: number | null
           alcohol: string | null
+          allergies: string | null
           avatar_url: string | null
+          budget: string | null
+          cooking_skill: string | null
+          cooking_time_min: number | null
+          country: string | null
           created_at: string
           daily_calorie_goal: number
           daily_step_goal: number
           diet_preference: string | null
           exercise_frequency: string | null
+          foods_disliked: string | null
+          foods_liked: string | null
           full_name: string | null
           gender: string | null
           health_goal: string | null
           height_cm: number | null
           hip_cm: number | null
           id: string
+          language: string | null
           last_checkin_at: string | null
+          medical_conditions: string | null
           metabolism_answers: Json | null
           metabolism_profile: string | null
           neck_cm: number | null
           occupation: string | null
           onboarding_completed: boolean
+          region: string | null
           sleep_hours: number | null
           smoking: string | null
           target_weight_kg: number | null
           updated_at: string
           waist_cm: number | null
+          water_goal_l: number | null
           water_intake_l: number | null
           weight_kg: number | null
         }
@@ -112,29 +222,40 @@ export type Database = {
           activity_level?: string | null
           age?: number | null
           alcohol?: string | null
+          allergies?: string | null
           avatar_url?: string | null
+          budget?: string | null
+          cooking_skill?: string | null
+          cooking_time_min?: number | null
+          country?: string | null
           created_at?: string
           daily_calorie_goal?: number
           daily_step_goal?: number
           diet_preference?: string | null
           exercise_frequency?: string | null
+          foods_disliked?: string | null
+          foods_liked?: string | null
           full_name?: string | null
           gender?: string | null
           health_goal?: string | null
           height_cm?: number | null
           hip_cm?: number | null
           id: string
+          language?: string | null
           last_checkin_at?: string | null
+          medical_conditions?: string | null
           metabolism_answers?: Json | null
           metabolism_profile?: string | null
           neck_cm?: number | null
           occupation?: string | null
           onboarding_completed?: boolean
+          region?: string | null
           sleep_hours?: number | null
           smoking?: string | null
           target_weight_kg?: number | null
           updated_at?: string
           waist_cm?: number | null
+          water_goal_l?: number | null
           water_intake_l?: number | null
           weight_kg?: number | null
         }
@@ -142,29 +263,40 @@ export type Database = {
           activity_level?: string | null
           age?: number | null
           alcohol?: string | null
+          allergies?: string | null
           avatar_url?: string | null
+          budget?: string | null
+          cooking_skill?: string | null
+          cooking_time_min?: number | null
+          country?: string | null
           created_at?: string
           daily_calorie_goal?: number
           daily_step_goal?: number
           diet_preference?: string | null
           exercise_frequency?: string | null
+          foods_disliked?: string | null
+          foods_liked?: string | null
           full_name?: string | null
           gender?: string | null
           health_goal?: string | null
           height_cm?: number | null
           hip_cm?: number | null
           id?: string
+          language?: string | null
           last_checkin_at?: string | null
+          medical_conditions?: string | null
           metabolism_answers?: Json | null
           metabolism_profile?: string | null
           neck_cm?: number | null
           occupation?: string | null
           onboarding_completed?: boolean
+          region?: string | null
           sleep_hours?: number | null
           smoking?: string | null
           target_weight_kg?: number | null
           updated_at?: string
           waist_cm?: number | null
+          water_goal_l?: number | null
           water_intake_l?: number | null
           weight_kg?: number | null
         }

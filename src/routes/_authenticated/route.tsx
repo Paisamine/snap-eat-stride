@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter, useNavigate } from "@tanstack/react-router";
-import { Home, History, User, Camera, Salad, LogOut, Moon, Sun } from "lucide-react";
+import { Home, History, User, Camera, Salad, LogOut, Moon, Sun, Utensils } from "lucide-react";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -48,6 +48,7 @@ function AppShell() {
 
   const nav: Array<{ to: string; label: string; icon: any; primary?: boolean }> = [
     { to: "/home", label: "Home", icon: Home },
+    { to: "/nutrition", label: "Diet", icon: Utensils },
     { to: "/analyze", label: "Scan", icon: Camera, primary: true },
     { to: "/history", label: "History", icon: History },
     { to: "/profile", label: "Profile", icon: User },
