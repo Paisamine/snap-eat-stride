@@ -14,7 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analyses: {
+        Row: {
+          alternatives: Json | null
+          calories: number
+          carbs_g: number
+          confidence: number | null
+          created_at: string
+          fat_g: number
+          food_name: string
+          health_score: number | null
+          id: string
+          image_url: string | null
+          is_healthy: boolean | null
+          items: Json | null
+          portion_size: string | null
+          protein_g: number
+          steps_needed: number
+          tips: Json | null
+          user_id: string
+          walking_minutes: number
+        }
+        Insert: {
+          alternatives?: Json | null
+          calories?: number
+          carbs_g?: number
+          confidence?: number | null
+          created_at?: string
+          fat_g?: number
+          food_name: string
+          health_score?: number | null
+          id?: string
+          image_url?: string | null
+          is_healthy?: boolean | null
+          items?: Json | null
+          portion_size?: string | null
+          protein_g?: number
+          steps_needed?: number
+          tips?: Json | null
+          user_id: string
+          walking_minutes?: number
+        }
+        Update: {
+          alternatives?: Json | null
+          calories?: number
+          carbs_g?: number
+          confidence?: number | null
+          created_at?: string
+          fat_g?: number
+          food_name?: string
+          health_score?: number | null
+          id?: string
+          image_url?: string | null
+          is_healthy?: boolean | null
+          items?: Json | null
+          portion_size?: string | null
+          protein_g?: number
+          steps_needed?: number
+          tips?: Json | null
+          user_id?: string
+          walking_minutes?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          created_at: string
+          daily_calorie_goal: number
+          daily_step_goal: number
+          full_name: string | null
+          gender: string | null
+          height_cm: number | null
+          id: string
+          updated_at: string
+          weight_kg: number | null
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          daily_calorie_goal?: number
+          daily_step_goal?: number
+          full_name?: string | null
+          gender?: string | null
+          height_cm?: number | null
+          id: string
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          daily_calorie_goal?: number
+          daily_step_goal?: number
+          full_name?: string | null
+          gender?: string | null
+          height_cm?: number | null
+          id?: string
+          updated_at?: string
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
