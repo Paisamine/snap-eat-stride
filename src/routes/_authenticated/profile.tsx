@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Suspense, useEffect, useState } from "react";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { User as UserIcon, Loader2, Flame, Footprints, TrendingUp } from "lucide-react";
+import { User as UserIcon, Loader2, Flame, Footprints, TrendingUp, ClipboardCheck, RefreshCw, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
