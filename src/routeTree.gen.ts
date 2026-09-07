@@ -24,6 +24,7 @@ import { Route as AuthenticatedNutritionRouteImport } from './routes/_authentica
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedCheckinRouteImport } from './routes/_authenticated/checkin'
+import { Route as AuthenticatedBlogAdminRouteImport } from './routes/_authenticated/blog-admin'
 import { Route as AuthenticatedAnalyzeRouteImport } from './routes/_authenticated/analyze'
 import { Route as ApiPublicBlogAutomationRouteImport } from './routes/api/public/blog-automation'
 
@@ -101,6 +102,11 @@ const AuthenticatedCheckinRoute = AuthenticatedCheckinRouteImport.update({
   path: '/checkin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBlogAdminRoute = AuthenticatedBlogAdminRouteImport.update({
+  id: '/blog-admin',
+  path: '/blog-admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAnalyzeRoute = AuthenticatedAnalyzeRouteImport.update({
   id: '/analyze',
   path: '/analyze',
@@ -120,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
+  '/blog-admin': typeof AuthenticatedBlogAdminRoute
   '/checkin': typeof AuthenticatedCheckinRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/home': typeof AuthenticatedHomeRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
+  '/blog-admin': typeof AuthenticatedBlogAdminRoute
   '/checkin': typeof AuthenticatedCheckinRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/home': typeof AuthenticatedHomeRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/analyze': typeof AuthenticatedAnalyzeRoute
+  '/_authenticated/blog-admin': typeof AuthenticatedBlogAdminRoute
   '/_authenticated/checkin': typeof AuthenticatedCheckinRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sitemap.xml'
     | '/analyze'
+    | '/blog-admin'
     | '/checkin'
     | '/history'
     | '/home'
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sitemap.xml'
     | '/analyze'
+    | '/blog-admin'
     | '/checkin'
     | '/history'
     | '/home'
@@ -215,6 +226,7 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sitemap.xml'
     | '/_authenticated/analyze'
+    | '/_authenticated/blog-admin'
     | '/_authenticated/checkin'
     | '/_authenticated/history'
     | '/_authenticated/home'
@@ -346,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCheckinRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/blog-admin': {
+      id: '/_authenticated/blog-admin'
+      path: '/blog-admin'
+      fullPath: '/blog-admin'
+      preLoaderRoute: typeof AuthenticatedBlogAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/analyze': {
       id: '/_authenticated/analyze'
       path: '/analyze'
@@ -365,6 +384,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAnalyzeRoute: typeof AuthenticatedAnalyzeRoute
+  AuthenticatedBlogAdminRoute: typeof AuthenticatedBlogAdminRoute
   AuthenticatedCheckinRoute: typeof AuthenticatedCheckinRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
@@ -375,6 +395,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAnalyzeRoute: AuthenticatedAnalyzeRoute,
+  AuthenticatedBlogAdminRoute: AuthenticatedBlogAdminRoute,
   AuthenticatedCheckinRoute: AuthenticatedCheckinRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
