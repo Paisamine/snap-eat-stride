@@ -55,8 +55,8 @@ function BlogHome() {
     enabled: filtering,
   });
 
-  const setSearch = (patch: Record<string, unknown>) =>
-    navigate({ search: (prev: any) => ({ ...prev, page: undefined, ...patch }) as any });
+  const go = (next: Record<string, unknown>) => navigate({ to: "/blog", search: next as never });
+  const setSearch = (patch: Record<string, unknown>) => go({ ...search, page: undefined, ...patch });
 
   const activeCategory = home.categories.find((c) => c.slug === search.category);
   const totalPages = filtered ? Math.max(1, Math.ceil(filtered.total / PAGE_SIZE)) : 1;
