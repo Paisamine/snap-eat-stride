@@ -211,7 +211,7 @@ function ArticlePage() {
           {tags.length ? (
             <div className="mt-8 flex flex-wrap gap-1.5">
               {tags.map((t) => (
-                <Link key={t.id} to="/blog" search={{ tag: t.slug }} className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:bg-accent">
+                <Link key={t.slug} to="/blog" search={{ tag: t.slug }} className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:bg-accent">
                   #{t.name}
                 </Link>
               ))}
