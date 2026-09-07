@@ -66,6 +66,9 @@ function AppShell() {
 
           </Link>
           <div className="flex items-center gap-1">
+            <Link to="/history" aria-label="Scan history" className="grid h-9 w-9 place-items-center rounded-full hover:bg-accent">
+              <History className="h-4 w-4" />
+            </Link>
             <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full hover:bg-accent">
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
