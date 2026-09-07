@@ -122,9 +122,9 @@ function BlogHome() {
               </div>
               {totalPages > 1 ? (
                 <div className="mt-8 flex items-center justify-center gap-2">
-                  <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => navigate({ search: (prev: any) => ({ ...prev, page: page - 1 }) as any })}>Previous</Button>
+                  <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => go({ ...search, page: page - 1 })}>Previous</Button>
                   <span className="text-xs text-muted-foreground">Page {page} of {totalPages}</span>
-                  <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => navigate({ search: (prev: any) => ({ ...prev, page: page + 1 }) as any })}>Next</Button>
+                  <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => go({ ...search, page: page + 1 })}>Next</Button>
                 </div>
               ) : null}
             </>
