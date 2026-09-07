@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter, useNavigate } from "@tanstack/react-router";
-import { Home, History, User, Camera, Coffee, LogOut, Moon, Sun, Utensils } from "lucide-react";
+import { Home, History, User, Camera, Coffee, LogOut, Moon, Sun, Utensils, BookOpen } from "lucide-react";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
