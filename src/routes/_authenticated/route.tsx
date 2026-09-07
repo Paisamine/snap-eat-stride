@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter, useNavigate } from "@tanstack/react-router";
-import { Home, History, User, Camera, Coffee, LogOut, Moon, Sun, Utensils } from "lucide-react";
+import { Home, History, User, Camera, Coffee, LogOut, Moon, Sun, Utensils, BookOpen } from "lucide-react";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -50,7 +50,7 @@ function AppShell() {
     { to: "/home", label: "Home", icon: Home },
     { to: "/nutrition", label: "Diet", icon: Utensils },
     { to: "/analyze", label: "Scan", icon: Camera, primary: true },
-    { to: "/history", label: "History", icon: History },
+    { to: "/blog", label: "Blog", icon: BookOpen },
     { to: "/profile", label: "Profile", icon: User },
   ];
 
@@ -66,6 +66,9 @@ function AppShell() {
 
           </Link>
           <div className="flex items-center gap-1">
+            <Link to="/history" aria-label="Scan history" className="grid h-9 w-9 place-items-center rounded-full hover:bg-accent">
+              <History className="h-4 w-4" />
+            </Link>
             <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full hover:bg-accent">
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>

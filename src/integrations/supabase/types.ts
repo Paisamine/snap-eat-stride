@@ -77,6 +77,426 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_automation_settings: {
+        Row: {
+          auto_publish: boolean
+          content_calendar: Json
+          created_at: string
+          default_language: string
+          enabled: boolean
+          id: string
+          last_run_at: string | null
+          lock_until: string | null
+          paused_at: string | null
+          paused_reason: string | null
+          posts_per_week: number
+          preferred_categories: string[]
+          singleton: boolean
+          target_word_count: number
+          updated_at: string
+        }
+        Insert: {
+          auto_publish?: boolean
+          content_calendar?: Json
+          created_at?: string
+          default_language?: string
+          enabled?: boolean
+          id?: string
+          last_run_at?: string | null
+          lock_until?: string | null
+          paused_at?: string | null
+          paused_reason?: string | null
+          posts_per_week?: number
+          preferred_categories?: string[]
+          singleton?: boolean
+          target_word_count?: number
+          updated_at?: string
+        }
+        Update: {
+          auto_publish?: boolean
+          content_calendar?: Json
+          created_at?: string
+          default_language?: string
+          enabled?: boolean
+          id?: string
+          last_run_at?: string | null
+          lock_until?: string | null
+          paused_at?: string | null
+          paused_reason?: string | null
+          posts_per_week?: number
+          preferred_categories?: string[]
+          singleton?: boolean
+          target_word_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      blog_generation_jobs: {
+        Row: {
+          category_id: string | null
+          completed_at: string | null
+          content_type: string | null
+          created_at: string
+          error_message: string | null
+          generated_content: Json | null
+          id: string
+          keyword: string | null
+          language: string
+          post_id: string | null
+          stage: string | null
+          status: string
+          target_word_count: number
+          topic: string
+          triggered_by: string
+        }
+        Insert: {
+          category_id?: string | null
+          completed_at?: string | null
+          content_type?: string | null
+          created_at?: string
+          error_message?: string | null
+          generated_content?: Json | null
+          id?: string
+          keyword?: string | null
+          language?: string
+          post_id?: string | null
+          stage?: string | null
+          status?: string
+          target_word_count?: number
+          topic: string
+          triggered_by?: string
+        }
+        Update: {
+          category_id?: string | null
+          completed_at?: string | null
+          content_type?: string | null
+          created_at?: string
+          error_message?: string | null
+          generated_content?: Json | null
+          id?: string
+          keyword?: string | null
+          language?: string
+          post_id?: string | null
+          stage?: string | null
+          status?: string
+          target_word_count?: number
+          topic?: string
+          triggered_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_generation_jobs_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_generation_jobs_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_post_tags: {
+        Row: {
+          post_id: string
+          tag_id: string
+        }
+        Insert: {
+          post_id: string
+          tag_id: string
+        }
+        Update: {
+          post_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_tags_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_post_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "blog_tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_post_views: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          referrer_host: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          referrer_host?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          referrer_host?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_views_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          author_name: string
+          canonical_url: string | null
+          category_id: string | null
+          content: string
+          content_type: string | null
+          created_at: string
+          excerpt: string | null
+          faq: Json
+          featured_image: string | null
+          featured_image_alt: string | null
+          focus_keyword: string | null
+          id: string
+          internal_links: Json
+          is_ai_generated: boolean
+          is_featured: boolean
+          language: string
+          meta_description: string | null
+          meta_title: string | null
+          needs_review: boolean
+          published_at: string | null
+          quality_report: Json | null
+          reading_time: number
+          scheduled_for: string | null
+          secondary_keywords: string[]
+          slug: string
+          sources: Json
+          status: string
+          title: string
+          updated_at: string
+          version: number
+          view_count: number
+        }
+        Insert: {
+          author_id?: string | null
+          author_name?: string
+          canonical_url?: string | null
+          category_id?: string | null
+          content?: string
+          content_type?: string | null
+          created_at?: string
+          excerpt?: string | null
+          faq?: Json
+          featured_image?: string | null
+          featured_image_alt?: string | null
+          focus_keyword?: string | null
+          id?: string
+          internal_links?: Json
+          is_ai_generated?: boolean
+          is_featured?: boolean
+          language?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          needs_review?: boolean
+          published_at?: string | null
+          quality_report?: Json | null
+          reading_time?: number
+          scheduled_for?: string | null
+          secondary_keywords?: string[]
+          slug: string
+          sources?: Json
+          status?: string
+          title: string
+          updated_at?: string
+          version?: number
+          view_count?: number
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string
+          canonical_url?: string | null
+          category_id?: string | null
+          content?: string
+          content_type?: string | null
+          created_at?: string
+          excerpt?: string | null
+          faq?: Json
+          featured_image?: string | null
+          featured_image_alt?: string | null
+          focus_keyword?: string | null
+          id?: string
+          internal_links?: Json
+          is_ai_generated?: boolean
+          is_featured?: boolean
+          language?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          needs_review?: boolean
+          published_at?: string | null
+          quality_report?: Json | null
+          reading_time?: number
+          scheduled_for?: string | null
+          secondary_keywords?: string[]
+          slug?: string
+          sources?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+          version?: number
+          view_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "blog_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_revisions: {
+        Row: {
+          content: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          note: string | null
+          post_id: string
+          title: string | null
+          version: number
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          note?: string | null
+          post_id: string
+          title?: string | null
+          version?: number
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          note?: string | null
+          post_id?: string
+          title?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_revisions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_tags: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      blog_topic_ideas: {
+        Row: {
+          category_slug: string | null
+          content_type: string | null
+          created_at: string
+          id: string
+          keyword: string | null
+          slug_hint: string
+          status: string
+          topic: string
+          used_at: string | null
+        }
+        Insert: {
+          category_slug?: string | null
+          content_type?: string | null
+          created_at?: string
+          id?: string
+          keyword?: string | null
+          slug_hint: string
+          status?: string
+          topic: string
+          used_at?: string | null
+        }
+        Update: {
+          category_slug?: string | null
+          content_type?: string | null
+          created_at?: string
+          id?: string
+          keyword?: string | null
+          slug_hint?: string
+          status?: string
+          topic?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
       favorite_meals: {
         Row: {
           calories: number | null
@@ -302,6 +722,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       weight_checkins: {
         Row: {
           created_at: string
@@ -358,10 +799,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      increment_blog_view: {
+        Args: { _referrer_host?: string; _slug: string }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "editor" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -377,12 +828,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -406,11 +857,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -431,11 +882,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -456,11 +907,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -473,11 +924,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -488,6 +939,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "editor", "user"],
+    },
   },
 } as const
