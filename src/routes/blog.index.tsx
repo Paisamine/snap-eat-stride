@@ -43,7 +43,7 @@ const PAGE_SIZE = 9;
 function BlogHome() {
   const home = Route.useLoaderData();
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/blog" });
+  const navigate = useNavigate();
   const [term, setTerm] = useState(search.q ?? "");
 
   const filtering = Boolean(search.category || search.tag || search.q);
