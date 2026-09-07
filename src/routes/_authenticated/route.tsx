@@ -50,7 +50,7 @@ function AppShell() {
     { to: "/home", label: "Home", icon: Home },
     { to: "/nutrition", label: "Diet", icon: Utensils },
     { to: "/analyze", label: "Scan", icon: Camera, primary: true },
-    { to: "/history", label: "History", icon: History },
+    { to: "/blog", label: "Blog", icon: BookOpen },
     { to: "/profile", label: "Profile", icon: User },
   ];
 
