@@ -42,7 +42,10 @@ export function BlogShell({ children }: { children: ReactNode }) {
           <p>
             This content is provided for general educational purposes and is not a substitute for professional medical or dietary advice.
           </p>
-          <p>© {new Date().getFullYear()} Calorie Count · <Link to="/blog" className="underline">Health &amp; Nutrition Blog</Link></p>
+          <p>
+            © {new Date().getFullYear()} Calorie Count · <Link to="/blog" className="underline">Health &amp; Nutrition Blog</Link> ·{" "}
+            <a href="/rss.xml" className="underline">RSS</a> · <Link to="/blog-admin" className="underline">Editor tools</Link>
+          </p>
         </div>
       </footer>
     </div>
