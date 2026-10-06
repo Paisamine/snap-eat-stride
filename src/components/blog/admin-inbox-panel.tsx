@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Mail, ChevronLeft, ChevronRight } from "lucide-react";
-import { getContactMessages, setContactMessageRead } from "@/lib/blog.functions";
+import { Mail, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { deleteContactMessage, getContactMessages, setContactMessageRead } from "@/lib/blog.functions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +19,15 @@ export function AdminInboxPanel() {
     mutationFn: (v: { id: string; is_read: boolean }) => setContactMessageRead({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["contact-messages"] }),
     onError: (e: any) => toast.error(e?.message ?? "Could not update the message."),
+  });
+
+  const del = useMutation({
+    mutationFn: (id: string) => deleteContactMessage({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Message deleted.");
+      qc.invalidateQueries({ queryKey: ["contact-messages"] });
+    },
+    onError: (e: any) => toast.error(e?.message ?? "Could not delete the message."),
   });
 
   if (loaded.isLoading) return <p className="py-10 text-center text-sm text-muted-foreground">Loading messages…</p>;
@@ -46,9 +55,18 @@ export function AdminInboxPanel() {
             </div>
             {m.subject ? <p className="mt-1.5 text-sm font-medium">{m.subject}</p> : null}
             <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">{m.message}</p>
-            <div className="mt-3">
+            <div className="mt-3 flex gap-2">
               <Button size="sm" variant="outline" onClick={() => mark.mutate({ id: m.id, is_read: !m.is_read })}>
                 Mark as {m.is_read ? "unread" : "read"}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => {
+                  if (window.confirm("Delete this message permanently?")) del.mutate(m.id);
+                }}
+              >
+                <Trash2 className="mr-1 h-3.5 w-3.5 text-destructive" /> Delete
               </Button>
             </div>
           </CardContent>
