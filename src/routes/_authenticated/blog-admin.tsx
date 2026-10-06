@@ -302,7 +302,7 @@ function AdminBody() {
                   <p className="text-xs text-muted-foreground">/{p.slug} · {p.reading_time} min · {p.focus_keyword ?? "no focus keyword"}</p>
                   {p.quality_report?.issues?.length ? (
                     <ul className="mt-2 list-disc pl-4 text-xs text-muted-foreground">
-                      {p.quality_report.issues.slice(0, 4).map((i: string, idx: number) => <li key={idx}>{i}</li>)}
+                      {p.quality_report.issues.slice(0, 4).map((i: any, idx: number) => <li key={idx}>{typeof i === "string" ? i : i?.message}</li>)}
                     </ul>
                   ) : null}
                 </div>
