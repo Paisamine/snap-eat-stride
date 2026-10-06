@@ -76,6 +76,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Calorie Count — Know Your Calories. Track Your Progress. Live Healthier." },
       { name: "description", content: "Calorie Count: premium AI wellness companion for calorie tracking, nutrition planning, weight goals, and healthy habits." },
       { name: "theme-color", content: "#6F4E37" },
+      { name: "google-adsense-account", content: "ca-pub-2781157986167878" },
       { property: "og:title", content: "Calorie Count" },
       { property: "og:description", content: "Know Your Calories. Track Your Progress. Live Healthier." },
       { property: "og:type", content: "website" },
