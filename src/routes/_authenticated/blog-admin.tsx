@@ -25,6 +25,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AdminWritePanel } from "@/components/blog/admin-write-panel";
+import { AdminAdsPanel } from "@/components/blog/admin-ads-panel";
+import { AdminInboxPanel } from "@/components/blog/admin-inbox-panel";
 
 export const Route = createFileRoute("/_authenticated/blog-admin")({
   head: () => ({
@@ -207,10 +210,13 @@ function AdminBody() {
       <Tabs defaultValue="generate">
         <TabsList className="flex-wrap">
           <TabsTrigger value="generate">AI generator</TabsTrigger>
+          <TabsTrigger value="write">Write / paste</TabsTrigger>
           <TabsTrigger value="posts">Articles</TabsTrigger>
           <TabsTrigger value="ideas">Topic ideas</TabsTrigger>
           <TabsTrigger value="automation">Automation</TabsTrigger>
+          <TabsTrigger value="ads">Ads</TabsTrigger>
           <TabsTrigger value="jobs">Activity</TabsTrigger>
+          <TabsTrigger value="inbox">Messages</TabsTrigger>
         </TabsList>
 
         <TabsContent value="generate" className="mt-4">
