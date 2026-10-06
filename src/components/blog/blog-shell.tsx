@@ -44,7 +44,9 @@ export function BlogShell({ children }: { children: ReactNode }) {
           </p>
           <p>
             © {new Date().getFullYear()} Calorie Count · <Link to="/blog" className="underline">Health &amp; Nutrition Blog</Link> ·{" "}
-            <a href="/rss.xml" className="underline">RSS</a> · <Link to="/blog-admin" className="underline">Editor tools</Link>
+            <a href="/rss.xml" className="underline">RSS</a> · <Link to="/about" className="underline">About</Link> ·{" "}
+            <Link to="/contact" className="underline">Contact</Link> · <Link to="/privacy" className="underline">Privacy</Link> ·{" "}
+            <Link to="/blog-admin" className="underline">Editor tools</Link>
           </p>
         </div>
       </footer>
