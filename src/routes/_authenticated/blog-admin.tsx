@@ -25,6 +25,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AdminWritePanel } from "@/components/blog/admin-write-panel";
+import { AdminAdsPanel } from "@/components/blog/admin-ads-panel";
+import { AdminInboxPanel } from "@/components/blog/admin-inbox-panel";
 
 export const Route = createFileRoute("/_authenticated/blog-admin")({
   head: () => ({
@@ -207,10 +210,13 @@ function AdminBody() {
       <Tabs defaultValue="generate">
         <TabsList className="flex-wrap">
           <TabsTrigger value="generate">AI generator</TabsTrigger>
+          <TabsTrigger value="write">Write / paste</TabsTrigger>
           <TabsTrigger value="posts">Articles</TabsTrigger>
           <TabsTrigger value="ideas">Topic ideas</TabsTrigger>
           <TabsTrigger value="automation">Automation</TabsTrigger>
+          <TabsTrigger value="ads">Ads</TabsTrigger>
           <TabsTrigger value="jobs">Activity</TabsTrigger>
+          <TabsTrigger value="inbox">Messages</TabsTrigger>
         </TabsList>
 
         <TabsContent value="generate" className="mt-4">
@@ -276,6 +282,10 @@ function AdminBody() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="write" className="mt-4">
+          <AdminWritePanel categories={data.categories} onSaved={refresh} />
+        </TabsContent>
+
         <TabsContent value="posts" className="mt-4 space-y-3">
           {data.posts.map((p: any) => (
             <Card key={p.id}>
@@ -292,7 +302,7 @@ function AdminBody() {
                   <p className="text-xs text-muted-foreground">/{p.slug} · {p.reading_time} min · {p.focus_keyword ?? "no focus keyword"}</p>
                   {p.quality_report?.issues?.length ? (
                     <ul className="mt-2 list-disc pl-4 text-xs text-muted-foreground">
-                      {p.quality_report.issues.slice(0, 4).map((i: string, idx: number) => <li key={idx}>{i}</li>)}
+                      {p.quality_report.issues.slice(0, 4).map((i: any, idx: number) => <li key={idx}>{typeof i === "string" ? i : i?.message}</li>)}
                     </ul>
                   ) : null}
                 </div>
@@ -441,6 +451,14 @@ function AdminBody() {
               {!data.jobs.length ? <p className="text-sm text-muted-foreground">No generation runs yet.</p> : null}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="ads" className="mt-4">
+          <AdminAdsPanel />
+        </TabsContent>
+
+        <TabsContent value="inbox" className="mt-4">
+          <AdminInboxPanel />
         </TabsContent>
       </Tabs>
 

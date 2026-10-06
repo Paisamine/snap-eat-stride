@@ -77,6 +77,51 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_ad_settings: {
+        Row: {
+          contact_email: string | null
+          created_at: string
+          enabled: boolean
+          id: string
+          publisher_id: string | null
+          show_to_signed_in: boolean
+          singleton: boolean
+          slot_footer: string | null
+          slot_header: string | null
+          slot_in_article: string | null
+          slot_sidebar: string | null
+          updated_at: string
+        }
+        Insert: {
+          contact_email?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          publisher_id?: string | null
+          show_to_signed_in?: boolean
+          singleton?: boolean
+          slot_footer?: string | null
+          slot_header?: string | null
+          slot_in_article?: string | null
+          slot_sidebar?: string | null
+          updated_at?: string
+        }
+        Update: {
+          contact_email?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          publisher_id?: string | null
+          show_to_signed_in?: boolean
+          singleton?: boolean
+          slot_footer?: string | null
+          slot_header?: string | null
+          slot_in_article?: string | null
+          slot_sidebar?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       blog_automation_settings: {
         Row: {
           auto_publish: boolean
@@ -494,6 +539,39 @@ export type Database = {
           status?: string
           topic?: string
           used_at?: string | null
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          honeypot: string | null
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          honeypot?: string | null
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          honeypot?: string | null
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          subject?: string | null
         }
         Relationships: []
       }

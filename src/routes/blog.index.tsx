@@ -3,9 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Search, Sparkles, Clock, CalendarDays, TrendingUp, RefreshCw } from "lucide-react";
 import { z } from "zod";
-import { getBlogHome, listBlogPosts } from "@/lib/blog.functions";
+import { getAdSettings, getBlogHome, listBlogPosts } from "@/lib/blog.functions";
 import { BlogShell } from "@/components/blog/blog-shell";
 import { PostCard, formatDate, type BlogCardPost } from "@/components/blog/post-card";
+import { AdSlot } from "@/components/blog/ad-slots";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -18,7 +19,10 @@ const SearchSchema = z.object({
 
 export const Route = createFileRoute("/blog/")({
   validateSearch: (s: Record<string, unknown>) => SearchSchema.parse(s),
-  loader: () => getBlogHome(),
+  loader: async () => {
+    const [home, ads] = await Promise.all([getBlogHome(), getAdSettings()]);
+    return { home, ads };
+  },
   head: () => ({
     meta: [
       { title: "Health & Nutrition Blog — Calorie Count" },
@@ -41,7 +45,7 @@ export const Route = createFileRoute("/blog/")({
 const PAGE_SIZE = 9;
 
 function BlogHome() {
-  const home = Route.useLoaderData();
+  const { home, ads } = Route.useLoaderData();
   const search = Route.useSearch();
   const navigate = useNavigate();
   const [term, setTerm] = useState(search.q ?? "");
@@ -168,6 +172,7 @@ function BlogHome() {
               ) : (
                 <p className="text-sm text-muted-foreground">New articles are on the way.</p>
               )}
+              <AdSlot settings={ads} slot={ads?.slot_footer} className="mt-8 rounded-2xl border border-border/60 p-4" />
             </section>
 
             <aside className="space-y-8">
@@ -177,6 +182,7 @@ function BlogHome() {
                   {home.popular.map((p) => <PostCard key={p.id} post={p as BlogCardPost} compact />)}
                 </div>
               </div>
+              <AdSlot settings={ads} slot={ads?.slot_sidebar} className="rounded-2xl border border-border/60 p-4" />
               <div>
                 <h2 className="mb-2 inline-flex items-center gap-2 text-sm font-bold"><RefreshCw className="h-4 w-4 text-primary" />Recently updated</h2>
                 <div className="space-y-1">

@@ -1,17 +1,21 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo } from "react";
 import { Clock, CalendarDays, User, Share2, Link2, ListTree, ShieldAlert } from "lucide-react";
-import { getBlogPost, trackBlogView } from "@/lib/blog.functions";
+import { getAdSettings, getBlogPost, trackBlogView } from "@/lib/blog.functions";
 import { BlogShell } from "@/components/blog/blog-shell";
 import { PostCard, formatDate, type BlogCardPost } from "@/components/blog/post-card";
+import { AdSlot } from "@/components/blog/ad-slots";
 import { markdownToHtml, extractToc, HEALTH_DISCLAIMER } from "@/lib/blog/markdown";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const data = await getBlogPost({ data: { slug: params.slug } });
+    const [data, ads] = await Promise.all([
+      getBlogPost({ data: { slug: params.slug } }),
+      getAdSettings(),
+    ]);
     if (!data?.post) throw notFound();
-    return data;
+    return { ...data, ads };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -92,7 +96,7 @@ const TOOL_LABELS: Record<string, string> = {
 };
 
 function ArticlePage() {
-  const { post, category, tags, related } = Route.useLoaderData();
+  const { post, category, tags, related, ads } = Route.useLoaderData();
   const html = useMemo(() => markdownToHtml(post.content ?? ""), [post.content]);
   const toc = useMemo(() => extractToc(post.content ?? ""), [post.content]);
   const faq = (Array.isArray(post.faq) ? post.faq : []) as Array<{ question: string; answer: string }>;
@@ -160,6 +164,9 @@ function ArticlePage() {
           ) : null}
 
           <div className="blog-content mt-8" dangerouslySetInnerHTML={{ __html: html }} />
+
+          <AdSlot settings={ads} slot={ads?.slot_in_article} className="mt-10 rounded-2xl border border-border/60 p-4" />
+
 
           {faq.length ? (
             <section className="mt-10">
@@ -250,6 +257,7 @@ function ArticlePage() {
                 ))}
               </ul>
             </div>
+            <AdSlot settings={ads} slot={ads?.slot_sidebar} className="rounded-2xl border border-border/60 p-4" />
           </div>
         </aside>
       </article>
