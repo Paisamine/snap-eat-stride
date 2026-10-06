@@ -1,3 +1,4 @@
+import logoAsset from "@/assets/logo.png.asset.json";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Coffee, Loader2 } from "lucide-react";
@@ -61,9 +62,7 @@ function AuthPage() {
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center gap-3">
-          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-glow">
-            <Coffee className="h-7 w-7" />
-          </div>
+          <img src={logoAsset.url} alt="Calorie Count logo" className="h-14 w-14 rounded-full object-contain" />
           <h1 className="text-2xl font-bold">Calorie Count</h1>
           <p className="text-sm text-muted-foreground">Know Your Calories. Track Your Progress. Live Healthier.</p>
 
