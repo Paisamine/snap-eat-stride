@@ -97,7 +97,7 @@ export function AdminAdsPanel() {
               inputMode="numeric"
               className="font-mono"
             />
-            <p className="mt-1.5 text-xs text-muted-foreground">{f.hint}. Copy the number from ads.txt… sorry, from Ads → Ad units → the unit → “Get code”, the value in data-ad-slot.</p>
+            <p className="mt-1.5 text-xs text-muted-foreground">{f.hint}. In AdSense open Ads → Ad units → the unit → Get code, then copy the number shown in data-ad-slot.</p>
           </div>
         ))}
 
