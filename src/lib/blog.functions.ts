@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
+import { HEALTH_DISCLAIMER, readingTime, slugify } from "./blog/markdown";
+import { validateArticle } from "./blog/validate";
 
 const POST_LIST_COLUMNS =
   "id, title, slug, excerpt, featured_image, featured_image_alt, category_id, author_name, reading_time, language, is_featured, view_count, published_at, updated_at, content_type";
@@ -513,4 +515,260 @@ export const runContentFreshnessScan = createServerFn({ method: "POST" })
     const { markStaleForReview } = await import("./blog/generate.server");
     const flagged = await markStaleForReview(supabaseAdmin as any, 180, 5);
     return { flagged };
+  });
+
+/* ------------------------------- ad settings ------------------------------- */
+
+const AD_COLUMNS =
+  "enabled, publisher_id, slot_header, slot_in_article, slot_footer, slot_sidebar, show_to_signed_in, contact_email";
+
+export const getAdSettings = createServerFn({ method: "GET" })
+  .handler(async () => {
+    const { data } = await (publicClient() as any)
+      .from("blog_ad_settings")
+      .select(AD_COLUMNS)
+      .eq("singleton", true)
+      .maybeSingle();
+    return (data ?? null) as AdSettingsRow | null;
+  });
+
+export type AdSettingsRow = {
+  enabled: boolean;
+  publisher_id: string | null;
+  slot_header: string | null;
+  slot_in_article: string | null;
+  slot_footer: string | null;
+  slot_sidebar: string | null;
+  show_to_signed_in: boolean;
+  contact_email: string | null;
+};
+
+const slotId = z
+  .string()
+  .trim()
+  .max(20)
+  .refine((v) => v === "" || /^\d{6,20}$/.test(v), { message: "Ad unit ID should be digits only." })
+  .default("");
+
+const AdSettingsInput = z.object({
+  enabled: z.boolean(),
+  publisher_id: z
+    .string()
+    .trim()
+    .max(40)
+    .refine((v) => v === "" || /^ca-pub-\d{6,20}$/.test(v), {
+      message: "Publisher ID should look like ca-pub-1234567890123456.",
+    })
+    .default(""),
+  slot_header: slotId,
+  slot_in_article: slotId,
+  slot_footer: slotId,
+  slot_sidebar: slotId,
+  show_to_signed_in: z.boolean().default(false),
+  contact_email: z
+    .string()
+    .trim()
+    .max(160)
+    .refine((v) => v === "" || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v), { message: "Enter a valid contact email." })
+    .default(""),
+});
+
+export const updateAdSettings = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => AdSettingsInput.parse(i))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const patch = {
+      enabled: data.enabled,
+      publisher_id: data.publisher_id || null,
+      slot_header: data.slot_header || null,
+      slot_in_article: data.slot_in_article || null,
+      slot_footer: data.slot_footer || null,
+      slot_sidebar: data.slot_sidebar || null,
+      show_to_signed_in: data.show_to_signed_in,
+      contact_email: data.contact_email || null,
+    };
+    const { data: row, error } = await (context.supabase as any)
+      .from("blog_ad_settings")
+      .update(patch)
+      .eq("singleton", true)
+      .select(AD_COLUMNS)
+      .single();
+    if (error) throw new Error(error.message);
+    return row as AdSettingsRow;
+  });
+
+/* --------------------------- manual article paste -------------------------- */
+
+const PasteInput = z.object({
+  title: z.string().trim().min(15).max(200),
+  content: z.string().min(200).max(60000),
+  excerpt: z.string().trim().max(400).optional(),
+  category_slug: z.string().trim().max(80).optional(),
+  tags: z.array(z.string().trim().min(1).max(40)).max(12).default([]),
+  featured_image: z.union([z.string().trim().url().max(600), z.literal("")]).optional(),
+  focus_keyword: z.string().trim().max(80).optional(),
+  meta_title: z.string().trim().max(120).optional(),
+  meta_description: z.string().trim().max(200).optional(),
+  slug: z.string().trim().max(120).optional(),
+  language: z.string().trim().max(8).default("en"),
+  status: z.enum(["draft", "published"]).default("draft"),
+  is_featured: z.boolean().default(false),
+});
+
+function firstParagraph(md: string) {
+  const para = md
+    .split(/\n\s*\n/)
+    .find((p) => p.trim() && !/^(#{2,4}|\||>|\s*[-*]|\s*\d+\.)/.test(p.trim()));
+  return (para ?? "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/[*_`#]/g, "").replace(/\s+/g, " ").trim();
+}
+
+/**
+ * Stores an article typed or pasted by an editor. It goes through the same
+ * quality, safety and SEO checks as AI-generated articles, and always carries
+ * the health disclaimer. Anything that fails a hard check is kept as a draft.
+ */
+export const createBlogPost = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => PasteInput.parse(i))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const db = context.supabase as any;
+
+    const body = data.content.trim();
+    const content = body.includes(HEALTH_DISCLAIMER) ? body : `${body}\n\n---\n\n> ${HEALTH_DISCLAIMER}`;
+
+    const base = slugify(data.slug || data.title) || "article";
+    let slug = base;
+    for (let n = 2; n < 30; n++) {
+      const { data: hit } = await db.from("blog_posts").select("id").eq("slug", slug).maybeSingle();
+      if (!hit) break;
+      slug = `${base}-${n}`;
+    }
+
+    let categoryId: string | null = null;
+    if (data.category_slug) {
+      const { data: cat } = await db.from("blog_categories").select("id").eq("slug", data.category_slug).maybeSingle();
+      categoryId = cat?.id ?? null;
+    }
+
+    const { data: existing } = await db.from("blog_posts").select("slug, title");
+    const report = validateArticle(
+      {
+        title: data.title,
+        slug,
+        excerpt: data.excerpt || firstParagraph(content).slice(0, 200),
+        content,
+        meta_title: data.meta_title || data.title.slice(0, 60),
+        meta_description: data.meta_description || firstParagraph(content).slice(0, 155),
+        focus_keyword: data.focus_keyword || null,
+        faq: [],
+        featured_image: data.featured_image || null,
+      },
+      {
+        existingSlugs: (existing ?? []).map((r: any) => r.slug),
+        existingTitles: (existing ?? []).map((r: any) => r.title),
+      },
+    );
+
+    const status = data.status === "published" && !report.passed ? "draft" : data.status;
+    const excerpt = data.excerpt || firstParagraph(content).slice(0, 200);
+
+    const { data: created, error } = await db
+      .from("blog_posts")
+      .insert({
+        title: data.title,
+        slug,
+        excerpt,
+        content,
+        featured_image: data.featured_image || null,
+        featured_image_alt: data.featured_image ? data.title : null,
+        category_id: categoryId,
+        author_id: context.userId,
+        author_name: "Calorie Count Editorial",
+        focus_keyword: data.focus_keyword || null,
+        secondary_keywords: [],
+        meta_title: data.meta_title || data.title.slice(0, 60),
+        meta_description: data.meta_description || excerpt.slice(0, 155),
+        status,
+        content_type: "Educational Guide",
+        is_ai_generated: false,
+        is_featured: data.is_featured,
+        reading_time: readingTime(content),
+        language: data.language,
+        faq: [],
+        sources: [],
+        internal_links: [],
+        needs_review: !report.passed,
+        quality_report: report,
+        published_at: status === "published" ? new Date().toISOString() : null,
+      })
+      .select("id, slug, status")
+      .single();
+    if (error) throw new Error(error.message);
+
+    for (const name of data.tags) {
+      const tSlug = slugify(name);
+      if (!tSlug) continue;
+      let { data: tag } = await db.from("blog_tags").select("id").eq("slug", tSlug).maybeSingle();
+      if (!tag) {
+        const { data: made } = await db.from("blog_tags").insert({ name, slug: tSlug }).select("id").single();
+        tag = made;
+      }
+      if (tag) await db.from("blog_post_tags").insert({ post_id: created.id, tag_id: tag.id });
+    }
+
+    return { post: created, quality: report, demoted: data.status === "published" && status === "draft" };
+  });
+
+/* ------------------------------ contact form ------------------------------ */
+
+const ContactInput = z.object({
+  name: z.string().trim().min(2).max(80),
+  email: z.string().trim().email().max(160),
+  subject: z.string().trim().max(120).optional(),
+  message: z.string().trim().min(10).max(4000),
+  honeypot: z.string().max(200).optional(),
+});
+
+export const submitContactMessage = createServerFn({ method: "POST" })
+  .inputValidator((i: unknown) => ContactInput.parse(i))
+  .handler(async ({ data }) => {
+    if (data.honeypot) return { ok: true };
+    const { error } = await (publicClient() as any).from("contact_messages").insert({
+      name: data.name,
+      email: data.email,
+      subject: data.subject || null,
+      message: data.message,
+    });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const getContactMessages = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ page: z.number().int().min(1).default(1) }).parse(i ?? {}))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const from = (data.page - 1) * 20;
+    const { data: rows, error, count } = await (context.supabase as any)
+      .from("contact_messages")
+      .select("id, name, email, subject, message, is_read, created_at", { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range(from, from + 19);
+    if (error) throw new Error(error.message);
+    return { messages: rows ?? [], total: count ?? 0 };
+  });
+
+export const setContactMessageRead = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ id: z.string().uuid(), is_read: z.boolean() }).parse(i))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { error } = await (context.supabase as any)
+      .from("contact_messages")
+      .update({ is_read: data.is_read })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
