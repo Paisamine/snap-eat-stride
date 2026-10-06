@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Mail, Send, CheckCircle2 } from "lucide-react";
 import { BlogShell } from "@/components/blog/blog-shell";
 import { getAdSettings, submitContactMessage } from "@/lib/blog.functions";
@@ -31,7 +31,7 @@ function ContactPage() {
   const [error, setError] = useState<string | null>(null);
   const [bot, setBot] = useState("");
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBusy(true);
     setError(null);
