@@ -282,6 +282,10 @@ function AdminBody() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="write" className="mt-4">
+          <AdminWritePanel categories={data.categories} onSaved={refresh} />
+        </TabsContent>
+
         <TabsContent value="posts" className="mt-4 space-y-3">
           {data.posts.map((p: any) => (
             <Card key={p.id}>
@@ -447,6 +451,14 @@ function AdminBody() {
               {!data.jobs.length ? <p className="text-sm text-muted-foreground">No generation runs yet.</p> : null}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="ads" className="mt-4">
+          <AdminAdsPanel />
+        </TabsContent>
+
+        <TabsContent value="inbox" className="mt-4">
+          <AdminInboxPanel />
         </TabsContent>
       </Tabs>
 
