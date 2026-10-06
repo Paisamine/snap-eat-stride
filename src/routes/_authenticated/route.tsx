@@ -1,3 +1,4 @@
+import logoAsset from "@/assets/logo.png.asset.json";
 import { createFileRoute, Outlet, redirect, Link, useLocation, useRouter, useNavigate } from "@tanstack/react-router";
 import { Home, History, User, Camera, Coffee, LogOut, Moon, Sun, Utensils, BookOpen } from "lucide-react";
 import { useEffect } from "react";
@@ -59,9 +60,7 @@ function AppShell() {
       <header className="sticky top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
           <Link to="/home" className="flex items-center gap-2">
-            <div className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
-              <Coffee className="h-4 w-4" />
-            </div>
+            <img src={logoAsset.url} alt="Calorie Count logo" className="h-8 w-8 rounded-full object-contain" />
             <span className="font-bold tracking-tight">Calorie<span className="text-primary"> Count</span></span>
 
           </Link>

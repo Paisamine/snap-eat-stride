@@ -1,3 +1,4 @@
+import logoAsset from "@/assets/logo.png.asset.json";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Camera, Sparkles, Footprints, Coffee, ArrowRight, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,9 +20,7 @@ function Landing() {
     <div className="min-h-screen bg-gradient-hero">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <div className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
-            <Coffee className="h-5 w-5" />
-          </div>
+          <img src={logoAsset.url} alt="Calorie Count logo" className="h-9 w-9 rounded-full object-contain" />
           <span className="text-lg font-bold tracking-tight">Calorie<span className="text-primary"> Count</span></span>
 
         </div>

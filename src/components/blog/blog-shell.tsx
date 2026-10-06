@@ -1,3 +1,4 @@
+import logoAsset from "@/assets/logo.png.asset.json";
 import { Link } from "@tanstack/react-router";
 import { Coffee, Moon, Sun, Rss } from "lucide-react";
 import type { ReactNode } from "react";
@@ -11,9 +12,7 @@ export function BlogShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
           <Link to="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary text-primary-foreground shadow-soft">
-              <Coffee className="h-4 w-4" />
-            </div>
+            <img src={logoAsset.url} alt="Calorie Count logo" className="h-9 w-9 rounded-full object-contain" />
             <span className="font-bold tracking-tight">
               Calorie<span className="text-primary"> Count</span>
             </span>
