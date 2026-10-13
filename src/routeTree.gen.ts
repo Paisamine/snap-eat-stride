@@ -20,6 +20,7 @@ import { Route as PagesSitemapDotxmlRouteImport } from './routes/pages-sitemap[.
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RssDotxmlRouteImport } from './routes/rss[.]xml'
+import { Route as ScanRouteImport } from './routes/scan'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAnalyzeRouteImport } from './routes/_authenticated/analyze'
 import { Route as AuthenticatedBlogAdminRouteImport } from './routes/_authenticated/blog-admin'
@@ -85,6 +86,11 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
 const RssDotxmlRoute = RssDotxmlRouteImport.update({
   id: '/rss.xml',
   path: '/rss.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
+  '/scan': typeof ScanRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
   '/blog-admin': typeof AuthenticatedBlogAdminRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
+  '/scan': typeof ScanRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/analyze': typeof AuthenticatedAnalyzeRoute
   '/blog-admin': typeof AuthenticatedBlogAdminRoute
@@ -209,6 +217,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
+  '/scan': typeof ScanRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/analyze': typeof AuthenticatedAnalyzeRoute
   '/_authenticated/blog-admin': typeof AuthenticatedBlogAdminRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/robots.txt'
     | '/rss.xml'
+    | '/scan'
     | '/sitemap.xml'
     | '/analyze'
     | '/blog-admin'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/robots.txt'
     | '/rss.xml'
+    | '/scan'
     | '/sitemap.xml'
     | '/analyze'
     | '/blog-admin'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/robots.txt'
     | '/rss.xml'
+    | '/scan'
     | '/sitemap.xml'
     | '/_authenticated/analyze'
     | '/_authenticated/blog-admin'
@@ -310,6 +322,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   RssDotxmlRoute: typeof RssDotxmlRoute
+  ScanRoute: typeof ScanRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -393,6 +406,13 @@ declare module '@tanstack/react-router' {
       path: '/rss.xml'
       fullPath: '/rss.xml'
       preLoaderRoute: typeof RssDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -519,6 +539,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   RssDotxmlRoute: RssDotxmlRoute,
+  ScanRoute: ScanRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

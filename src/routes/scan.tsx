@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import logoAsset from "@/assets/logo.png.asset.json";
-import { ScanView } from "./_authenticated/analyze";
+import { ScanView } from "@/components/scan-view";
 
 export const Route = createFileRoute("/scan")({
   ssr: false,
