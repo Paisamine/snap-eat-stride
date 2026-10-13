@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import logoAsset from "@/assets/logo.png.asset.json";
 import { ScanView } from "@/components/scan-view";
+import { GuestBottomNav } from "@/components/guest-nav";
 
 export const Route = createFileRoute("/scan")({
   ssr: false,
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/scan")({
         <Link to="/auth" className="text-sm font-medium text-primary">Sign in</Link>
       </header>
       <main className="mx-auto max-w-4xl px-4 pb-10"><ScanView guest /></main>
+      <GuestBottomNav />
     </div>
   ),
 });

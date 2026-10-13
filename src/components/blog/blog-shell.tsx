@@ -1,4 +1,5 @@
 import logoAsset from "@/assets/logo.png.asset.json";
+import { GuestBottomNav } from "@/components/guest-nav";
 import { Link } from "@tanstack/react-router";
 import { Coffee, Moon, Sun, Rss } from "lucide-react";
 import type { ReactNode } from "react";
@@ -49,6 +50,7 @@ export function BlogShell({ children }: { children: ReactNode }) {
           </p>
         </div>
       </footer>
+      <GuestBottomNav />
     </div>
   );
 }
