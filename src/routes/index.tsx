@@ -1,18 +1,39 @@
 import logoAsset from "@/assets/logo.png.asset.json";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { Camera, Sparkles, Footprints, Coffee, ArrowRight, Moon, Sun } from "lucide-react";
+import { Camera, Sparkles, Footprints, ArrowRight, Moon, Sun, Utensils, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useTheme } from "@/components/theme-provider";
 
 export const Route = createFileRoute("/")({
   ssr: false,
+  head: () => ({
+    meta: [
+      { title: "Calorie Count — Free Food Calorie Scanner, Diet Plans & Health Blog" },
+      { name: "description", content: "Snap food photos for instant calories, explore Indian diet plans and read free nutrition articles — no login needed." },
+      { property: "og:title", content: "Calorie Count — Know Your Calories" },
+      { property: "og:description", content: "Free calorie scanner, diet plans and nutrition blog." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   beforeLoad: async () => {
     const { data } = await supabase.auth.getSession();
     if (data.session) throw redirect({ to: "/home" });
   },
   component: Landing,
 });
+
+function Explore({ to, icon: Icon, title, text, cta }: { to: "/scan" | "/blog" | "/diet-preview"; icon: any; title: string; text: string; cta: string }) {
+  return (
+    <Link to={to} className="group rounded-3xl border border-border bg-card p-6 shadow-soft transition hover:-translate-y-0.5">
+      <Icon className="h-7 w-7 text-primary" />
+      <h3 className="mt-4 text-lg font-bold">{title}</h3>
+      <p className="mt-1 text-sm text-muted-foreground">{text}</p>
+      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">{cta} <ArrowRight className="h-4 w-4" /></span>
+    </Link>
+  );
+}
 
 function Landing() {
   const { theme, toggle } = useTheme();
@@ -25,10 +46,12 @@ function Landing() {
 
         </div>
         <div className="flex items-center gap-2">
+          <Link to="/blog" className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">Blog</Link>
+          <Link to="/diet-preview" className="hidden rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground sm:block">Diet plan</Link>
           <button onClick={toggle} aria-label="Toggle theme" className="grid h-9 w-9 place-items-center rounded-full border border-border hover:bg-accent">
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
-          <Link to="/auth"><Button variant="ghost">Sign in</Button></Link>
+          <Link to="/auth" className="hidden sm:block"><Button variant="ghost">Sign in</Button></Link>
           <Link to="/auth"><Button className="rounded-full">Get started</Button></Link>
         </div>
       </header>
@@ -87,6 +110,12 @@ function Landing() {
             </div>
           </div>
         </div>
+
+        <section className="mt-20 grid gap-5 md:grid-cols-3">
+          <Explore to="/scan" icon={Camera} title="Food scanner" text="Photo khinchiye, calories aur burn time turant. Free, no login." cta="Scan now" />
+          <Explore to="/diet-preview" icon={Utensils} title="Personal diet plan" text="Indian meals ke saath 7-day plan aur grocery list. Sample dekhiye." cta="See sample" />
+          <Explore to="/blog" icon={BookOpen} title="Health blog" text="Roti, dal, paneer, poha — nutrition articles padhiye, free." cta="Read articles" />
+        </section>
       </main>
     </div>
   );
