@@ -2,14 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Mail, Send, CheckCircle2 } from "lucide-react";
 import { BlogShell } from "@/components/blog/blog-shell";
-import { getAdSettings, submitContactMessage } from "@/lib/blog.functions";
+import { submitContactMessage } from "@/lib/blog.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/contact")({
-  loader: () => getAdSettings(),
   head: () => ({
     meta: [
       { title: "Contact Calorie Count" },
