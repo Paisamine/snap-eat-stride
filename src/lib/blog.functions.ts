@@ -519,20 +519,25 @@ export const runContentFreshnessScan = createServerFn({ method: "POST" })
 
 /* ------------------------------- ad settings ------------------------------- */
 
-const AD_COLUMNS =
-  "enabled, publisher_id, slot_header, slot_in_article, slot_footer, slot_sidebar, show_to_signed_in, contact_email";
+// Public ad config only — contact_email is admin-only and never leaves the server.
+const PUBLIC_AD_COLUMNS =
+  "enabled, publisher_id, slot_header, slot_in_article, slot_footer, slot_sidebar, show_to_signed_in";
+const AD_COLUMNS = `${PUBLIC_AD_COLUMNS}, contact_email`;
 
 export const getAdSettings = createServerFn({ method: "GET" })
   .handler(async () => {
-    const { data } = await (publicClient() as any)
+    // RLS now restricts blog_ad_settings to admins, so read through the
+    // privileged client but return only the non-sensitive ad columns.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await (supabaseAdmin as any)
       .from("blog_ad_settings")
-      .select(AD_COLUMNS)
+      .select(PUBLIC_AD_COLUMNS)
       .eq("singleton", true)
       .maybeSingle();
-    return (data ?? null) as AdSettingsRow | null;
+    return (data ?? null) as PublicAdSettings | null;
   });
 
-export type AdSettingsRow = {
+export type PublicAdSettings = {
   enabled: boolean;
   publisher_id: string | null;
   slot_header: string | null;
@@ -540,8 +545,23 @@ export type AdSettingsRow = {
   slot_footer: string | null;
   slot_sidebar: string | null;
   show_to_signed_in: boolean;
+};
+
+export type AdSettingsRow = PublicAdSettings & {
   contact_email: string | null;
 };
+
+export const getAdSettingsAdmin = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { data } = await (context.supabase as any)
+      .from("blog_ad_settings")
+      .select(AD_COLUMNS)
+      .eq("singleton", true)
+      .maybeSingle();
+    return (data ?? null) as AdSettingsRow | null;
+  });
 
 const slotId = z
   .string()
