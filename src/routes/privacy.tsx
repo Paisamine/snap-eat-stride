@@ -1,10 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ShieldCheck } from "lucide-react";
 import { BlogShell } from "@/components/blog/blog-shell";
-import { getAdSettings } from "@/lib/blog.functions";
-
 export const Route = createFileRoute("/privacy")({
-  loader: () => getAdSettings(),
   head: () => ({
     meta: [
       { title: "Privacy Policy — Calorie Count" },
@@ -20,8 +17,6 @@ export const Route = createFileRoute("/privacy")({
 });
 
 function PrivacyPage() {
-  const settings = Route.useLoaderData();
-  const email = settings?.contact_email;
 
   return (
     <BlogShell>
@@ -116,8 +111,7 @@ function PrivacyPage() {
             <h2 className="text-lg font-bold">Contact</h2>
             <p className="mt-2">
               Questions about this policy or your data: use the{" "}
-              <a href="/contact" className="text-primary underline">contact page</a>
-              {email ? <> or write to <a href={`mailto:${email}`} className="text-primary underline">{email}</a></> : null}.
+              <a href="/contact" className="text-primary underline">contact page</a>.
             </p>
           </section>
         </div>
