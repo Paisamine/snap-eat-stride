@@ -9,7 +9,6 @@ export type AdSettings = {
   slot_footer: string | null;
   slot_sidebar: string | null;
   show_to_signed_in: boolean;
-  contact_email: string | null;
 };
 
 declare global {

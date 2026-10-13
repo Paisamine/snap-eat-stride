@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Megaphone } from "lucide-react";
-import { getAdSettings, updateAdSettings } from "@/lib/blog.functions";
+import { getAdSettingsAdmin, updateAdSettings } from "@/lib/blog.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,7 @@ const FIELDS = [
 
 export function AdminAdsPanel() {
   const qc = useQueryClient();
-  const loaded = useQuery({ queryKey: ["ad-settings"], queryFn: () => getAdSettings() });
+  const loaded = useQuery({ queryKey: ["ad-settings"], queryFn: () => getAdSettingsAdmin() });
 
   const [enabled, setEnabled] = useState(false);
   const [publisher, setPublisher] = useState("");
