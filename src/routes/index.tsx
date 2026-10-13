@@ -48,9 +48,9 @@ function Landing() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/auth">
+              <Link to="/scan">
                 <Button size="lg" className="rounded-full shadow-glow">
-                  Start scanning <ArrowRight className="ml-1 h-4 w-4" />
+                  Try free — no login <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/auth">

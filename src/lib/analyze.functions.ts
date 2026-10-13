@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const InputSchema = z.object({
-  imageBase64: z.string().min(20),
+  imageBase64: z.string().min(20).max(4_000_000),
   mimeType: z.string().default("image/jpeg"),
 });
 
@@ -25,7 +25,26 @@ const AnalysisSchema = z.object({
 export type AnalysisResult = z.infer<typeof AnalysisSchema> & {
   steps_needed: number;
   walking_minutes: number;
+  natural_burn_per_hour: number;
+  natural_hours: number;
+  natural_window_hours: number;
+  natural_window_kcal: number;
 };
+
+// Average adult burns ~2000 kcal/day just living (BMR + light daily movement).
+const NATURAL_KCAL_PER_HOUR = 2000 / 24;
+const NATURAL_WINDOW_HOURS = 3;
+const KCAL_PER_STEP = 0.04;
+
+export function burnPlan(calories: number) {
+  const natural_burn_per_hour = Math.round(NATURAL_KCAL_PER_HOUR);
+  const natural_hours = Math.round((calories / NATURAL_KCAL_PER_HOUR) * 10) / 10;
+  const natural_window_kcal = Math.round(NATURAL_KCAL_PER_HOUR * NATURAL_WINDOW_HOURS);
+  const remaining = Math.max(0, calories - natural_window_kcal);
+  const steps_needed = Math.round(remaining / KCAL_PER_STEP);
+  const walking_minutes = Math.round(steps_needed / 110);
+  return { steps_needed, walking_minutes, natural_burn_per_hour, natural_hours, natural_window_hours: NATURAL_WINDOW_HOURS, natural_window_kcal };
+}
 
 const SYSTEM = `You are a nutritionist AI. Given a photo of food, identify items, estimate portion size, calories and macros. Be realistic; if the image is not clearly food, say so via low confidence and food_name="Unknown". Respond ONLY with valid JSON matching the schema.`;
 
@@ -41,10 +60,7 @@ const SCHEMA_HINT = `{
   "alternatives": ["lower-cal alternative", ...]
 }`;
 
-export const analyzeFood = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => InputSchema.parse(input))
-  .handler(async ({ data }): Promise<AnalysisResult> => {
+async function runAnalysis(data: z.infer<typeof InputSchema>): Promise<AnalysisResult> {
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
 
@@ -88,8 +104,15 @@ export const analyzeFood = createServerFn({ method: "POST" })
     catch { throw new Error("AI returned invalid JSON"); }
 
     const analysis = AnalysisSchema.parse(parsed);
-    const steps_needed = Math.round(analysis.calories * 20);
-    const walking_minutes = Math.round(steps_needed / 120);
+    return { ...analysis, ...burnPlan(analysis.calories) };
+}
 
-    return { ...analysis, steps_needed, walking_minutes };
-  });
+export const analyzeFood = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => InputSchema.parse(input))
+  .handler(async ({ data }) => runAnalysis(data));
+
+// Guest scan: no sign-in needed, nothing is stored.
+export const analyzeFoodGuest = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => InputSchema.parse(input))
+  .handler(async ({ data }) => runAnalysis(data));

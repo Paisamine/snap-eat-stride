@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Camera, Upload, Sparkles, Loader2, X, Flame, Footprints, Clock, Salad, Leaf, Save, Share2, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
@@ -8,17 +8,16 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { analyzeFood, type AnalysisResult } from "@/lib/analyze.functions";
+import { analyzeFood, analyzeFoodGuest, type AnalysisResult } from "@/lib/analyze.functions";
 import { blobToBase64, compressImage } from "@/lib/image";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated/analyze")({
   ssr: false,
-  component: AnalyzePage,
+  component: () => <ScanView />,
 });
 
-function AnalyzePage() {
-  const navigate = useNavigate();
+export function ScanView({ guest = false }: { guest?: boolean }) {
   const qc = useQueryClient();
   const fileInput = useRef<HTMLInputElement>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
@@ -27,7 +26,7 @@ function AnalyzePage() {
   const [status, setStatus] = useState<"idle" | "analyzing" | "done">("idle");
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [saved, setSaved] = useState(false);
-  const analyze = useServerFn(analyzeFood);
+  const analyze = useServerFn(guest ? analyzeFoodGuest : analyzeFood);
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
@@ -57,6 +56,7 @@ function AnalyzePage() {
 
   async function saveAnalysis() {
     if (!result || !blob) return;
+    if (guest) return;
     const { data: userData } = await supabase.auth.getUser();
     const uid = userData.user!.id;
     const path = `${uid}/${Date.now()}.jpg`;
@@ -177,6 +177,13 @@ function AnalyzePage() {
                 </div>
               </Card>
 
+              <Card className="rounded-3xl p-5">
+                <div className="flex items-center gap-2 text-sm font-semibold"><Clock className="h-4 w-4 text-primary" /> शरीर खुद कितना जलाता है</div>
+                <p className="mt-2 text-sm">आपका शरीर आराम में भी लगभग <b>{result.natural_burn_per_hour} kcal हर घंटे</b> जलाता है।</p>
+                <p className="mt-1 text-sm">अगर आप अगले <b>~{result.natural_hours} घंटे</b> कुछ और न खाएँ, तो यह खाना अपने-आप burn हो जाएगा।</p>
+                <p className="mt-1 text-xs text-muted-foreground">अगले {result.natural_window_hours} घंटे में शरीर खुद ~{result.natural_window_kcal} kcal जला देगा — नीचे के कदम सिर्फ बाकी कैलोरी के लिए हैं।</p>
+              </Card>
+
               <div className="grid gap-3 sm:grid-cols-2">
                 <Card className="rounded-3xl border-none bg-gradient-to-br from-primary/15 to-primary/5 p-5">
                   <div className="flex items-center justify-between">
@@ -246,10 +253,15 @@ function AnalyzePage() {
                 These values are estimates and may not be completely accurate.
               </p>
 
+              {guest && (
+                <Card className="rounded-3xl p-4 text-sm">
+                  अपना record save करना और diet plan पाना है? <Link to="/auth" className="font-semibold text-primary">Sign in करें</Link>
+                </Card>
+              )}
               <div className="flex gap-2 pb-4">
-                <Button onClick={saveAnalysis} disabled={saved} className="flex-1 rounded-full gap-2">
+                {!guest && <Button onClick={saveAnalysis} disabled={saved} className="flex-1 rounded-full gap-2">
                   <Save className="h-4 w-4" /> {saved ? "Saved" : "Save"}
-                </Button>
+                </Button>}
                 <Button onClick={share} variant="outline" className="flex-1 rounded-full gap-2">
                   <Share2 className="h-4 w-4" /> Share
                 </Button>
