@@ -67,7 +67,8 @@ function DietPreview() {
         <div className="mt-8 rounded-2xl border border-primary/20 bg-primary/10 p-6 text-center">
           <h2 className="text-lg font-bold">Apna plan banane ke liye sign in karein</h2>
           <p className="mt-1 text-sm text-muted-foreground">Google se 1 click — aapka data surakshit rahega.</p>
-          <Link to="/auth"><Button className="mt-4 rounded-full">Create My Plan</Button></Link>
+          <Link to="/auth"><Button className="mt-4 rounded-full">Generate my personal diet chart</Button></Link>
+          <p className="mt-2 text-xs text-muted-foreground">1-click Google sign in · sirf 1 minute ka chhota form</p>
         </div>
       </div>
     </BlogShell>

@@ -4,6 +4,7 @@ import { Camera, Sparkles, Footprints, ArrowRight, Moon, Sun, Utensils, BookOpen
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useTheme } from "@/components/theme-provider";
+import { GuestBottomNav } from "@/components/guest-nav";
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -117,6 +118,7 @@ function Landing() {
           <Explore to="/blog" icon={BookOpen} title="Health blog" text="Roti, dal, paneer, poha — nutrition articles padhiye, free." cta="Read articles" />
         </section>
       </main>
+      <GuestBottomNav />
     </div>
   );
 }
