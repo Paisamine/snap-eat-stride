@@ -24,7 +24,6 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const settings = Route.useLoaderData();
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -112,16 +111,7 @@ function ContactPage() {
         )}
 
         <div className="mt-6 space-y-2 text-sm text-muted-foreground">
-          <p>
-            Prefer email?{" "}
-            {settings?.contact_email ? (
-              <a href={`mailto:${settings.contact_email}`} className="text-primary underline">
-                {settings.contact_email}
-              </a>
-            ) : (
-              "This form is the fastest route — we answer within a few working days."
-            )}
-          </p>
+          <p>This form is the fastest route — we answer within a few working days.</p>
           <p>
             For a copy or deletion of your own account data, mention the email address you signed up with so we can find your
             records.
