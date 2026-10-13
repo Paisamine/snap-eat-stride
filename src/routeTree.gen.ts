@@ -16,6 +16,7 @@ import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogSitemapDotxmlRouteImport } from './routes/blog-sitemap[.]xml'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DietPreviewRouteImport } from './routes/diet-preview'
 import { Route as PagesSitemapDotxmlRouteImport } from './routes/pages-sitemap[.]xml'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
@@ -66,6 +67,11 @@ const BlogSitemapDotxmlRoute = BlogSitemapDotxmlRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DietPreviewRoute = DietPreviewRouteImport.update({
+  id: '/diet-preview',
+  path: '/diet-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PagesSitemapDotxmlRoute = PagesSitemapDotxmlRouteImport.update({
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog-sitemap.xml': typeof BlogSitemapDotxmlRoute
   '/contact': typeof ContactRoute
+  '/diet-preview': typeof DietPreviewRoute
   '/pages-sitemap.xml': typeof PagesSitemapDotxmlRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog-sitemap.xml': typeof BlogSitemapDotxmlRoute
   '/contact': typeof ContactRoute
+  '/diet-preview': typeof DietPreviewRoute
   '/pages-sitemap.xml': typeof PagesSitemapDotxmlRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog-sitemap.xml': typeof BlogSitemapDotxmlRoute
   '/contact': typeof ContactRoute
+  '/diet-preview': typeof DietPreviewRoute
   '/pages-sitemap.xml': typeof PagesSitemapDotxmlRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -240,6 +249,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog-sitemap.xml'
     | '/contact'
+    | '/diet-preview'
     | '/pages-sitemap.xml'
     | '/privacy'
     | '/robots.txt'
@@ -265,6 +275,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog-sitemap.xml'
     | '/contact'
+    | '/diet-preview'
     | '/pages-sitemap.xml'
     | '/privacy'
     | '/robots.txt'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog-sitemap.xml'
     | '/contact'
+    | '/diet-preview'
     | '/pages-sitemap.xml'
     | '/privacy'
     | '/robots.txt'
@@ -318,6 +330,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogSitemapDotxmlRoute: typeof BlogSitemapDotxmlRoute
   ContactRoute: typeof ContactRoute
+  DietPreviewRoute: typeof DietPreviewRoute
   PagesSitemapDotxmlRoute: typeof PagesSitemapDotxmlRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -378,6 +391,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diet-preview': {
+      id: '/diet-preview'
+      path: '/diet-preview'
+      fullPath: '/diet-preview'
+      preLoaderRoute: typeof DietPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pages-sitemap.xml': {
@@ -535,6 +555,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogSitemapDotxmlRoute: BlogSitemapDotxmlRoute,
   ContactRoute: ContactRoute,
+  DietPreviewRoute: DietPreviewRoute,
   PagesSitemapDotxmlRoute: PagesSitemapDotxmlRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
