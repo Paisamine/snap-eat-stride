@@ -225,6 +225,12 @@ function ArticlePage() {
             </div>
           ) : null}
 
+          <div className="mt-10 rounded-2xl border border-primary/20 bg-primary/10 p-6 text-center">
+            <h2 className="text-lg font-bold">Check your meal's calories in seconds</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Snap a photo — free, no login needed.</p>
+            <Link to="/scan"><Button className="mt-4 rounded-full">Try Calorie Count Scanner Free</Button></Link>
+          </div>
+
           {related.length ? (
             <section className="mt-12">
               <h2 className="mb-4 text-lg font-bold">Related articles</h2>
